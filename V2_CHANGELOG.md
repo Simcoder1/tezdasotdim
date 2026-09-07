@@ -23,3 +23,9 @@ npm start
 ```
 
 `API_BASE_URL` `.env` ichida mavjud backend manziliga yo'naltiriladi.
+
+## V3 Buyer Concierge
+- Black/white mobile-first redesign
+- AI problem-first discovery flow
+- Direct @tezdasotdim channel conversion
+- Lightweight CSS motion, no heavy WebGL
