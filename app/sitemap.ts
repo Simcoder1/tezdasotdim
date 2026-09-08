@@ -1,15 +1,16 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tezdasotdim.vercel.app";
   return [
     {
-      url: "https://tezdasotdim.vercel.app",
+      url: siteUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
     {
-      url: "https://tezdasotdim.vercel.app/katalog",
+      url: `${siteUrl}/katalog`,
       lastModified: new Date(),
       changeFrequency: "hourly",
       priority: 0.9,

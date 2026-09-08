@@ -13,3 +13,6 @@
 - Yuborilgan robot ikonka yuqori chapdagi bosh sahifa boshqaruviga professional joylashtirildi.
 - Kirish sarlavhasi, izohi, qidiruv namunasi va Telegram kanal matni yangi buyer-first copy bilan almashtirildi.
 - Natijalar ekranidagi ortiqcha yuqori yozuv olib tashlandi va Telegram kanal CTA tugmasi och yashil aksentga o‘tkazildi.
+- Google uchun canonical metadata, indekslash sozlamasi, WebSite structured data va domen asosidagi sitemap qo‘shildi.
+- GA4 hodisalari qo‘shildi: maqsad tanlash, qidiruv, tavsiyalar soni va Telegramga o‘tish konversiyasi.
+- Erkin qidiruv matni maxfiylik sabab GA4’ga yuborilmaydi; faqat turi va uzunligi o‘lchanadi.

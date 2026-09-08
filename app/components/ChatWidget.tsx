@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { trackEvent } from "../lib/analytics";
 
 type Result = { id: number; summary: string; channel_url: string };
 type Choice = { label: string; query: string };
@@ -32,19 +33,25 @@ export default function ChatWidget() {
   const stageRef = useRef<HTMLElement>(null);
   useEffect(() => { stageRef.current?.focus(); }, [screen]);
 
-  async function findBots(parts: string[]) {
+  async function findBots(parts: string[], source: "guided" | "free_text" = "guided") {
+    trackEvent("search", { search_source: source, query_length: parts.join(", ").length });
     setLoading(true); setScreen("results");
     try {
       const response = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: parts.join(", ") }) });
       const data = await response.json();
       setIntro(data.intro || "Siz aytgan ehtiyoj uchun tayyor variantlarni ajratdik.");
       setResults(data.results || []);
+      trackEvent("recommendations_viewed", { results_count: data.results?.length || 0, search_source: source });
     } catch {
       setIntro("Hozir qidiruvga ulanib bo‘lmadi. Kanalda yangi tayyor botlarni ko‘rishingiz mumkin."); setResults([]);
     } finally { setLoading(false); }
   }
-  function chooseGoal(choice: Choice) { setAnswers([choice.query]); setQuestion(0); setScreen("questions"); }
+  function chooseGoal(choice: Choice) {
+    trackEvent("goal_selected", { goal: choice.label });
+    setAnswers([choice.query]); setQuestion(0); setScreen("questions");
+  }
   function openSelection() {
+    trackEvent("guided_search_started");
     setAnswers(["biznes uchun tayyor Telegram bot"]);
     setQuestion(0);
     setScreen("questions");
@@ -54,8 +61,9 @@ export default function ChatWidget() {
     if (question === QUESTIONS.length - 1) { setAnswers(next); void findBots(next); return; }
     setAnswers(next); setQuestion(question + 1);
   }
-  function submit(event: FormEvent) { event.preventDefault(); if (input.trim()) void findBots([input.trim()]); }
+  function submit(event: FormEvent) { event.preventDefault(); if (input.trim()) void findBots([input.trim()], "free_text"); }
   function restart() { setInput(""); setAnswers([]); setResults([]); setIntro(""); setQuestion(0); setScreen("start"); }
+  function trackTelegram(location: string) { trackEvent("telegram_click", { click_location: location }); }
 
   return <main className="finder-page">
     <section className="finder-shell" ref={stageRef} tabIndex={-1} aria-label="Tayyor Telegram bot tanlash yordamchisi">
@@ -63,7 +71,7 @@ export default function ChatWidget() {
         <button className="home-link" onClick={restart} aria-label="Bosh sahifaga qaytish">
           <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tayyor Telegram botlar" />
         </button>
-        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link">Telegram kanal <span>↗</span></a>
+        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link" onClick={() => trackTelegram("header")}>Telegram kanal <span>↗</span></a>
       </header>
       <div className={"finder-stage screen-" + screen}>
         {screen === "start" && <div className="screen start-screen">
@@ -81,14 +89,14 @@ export default function ChatWidget() {
         </div>}
         {screen === "results" && <div className="screen results-screen">
           <div className="results-heading"><h2>{loading ? "Siz uchun qidiryapmiz…" : "Sizga mos variantlar"}</h2><button onClick={restart} className="restart">↺ Qayta tanlash</button></div>
-          {loading ? <div className="loading-card"><span /><span /><span /></div> : results.length > 0 ? <><p className="result-intro">{intro}</p><div className="result-rail">{results.slice(0, 5).map((result, index) => <article className="bot-card" key={result.id}><div className="match"><span>{96 - index * 3}%</span> MOS</div><h3>{title(result.summary)}</h3><p>{result.summary}</p><div className="card-actions"><button onClick={() => window.open(result.channel_url, "_blank", "noopener,noreferrer")}>Batafsil ko‘rish</button><a href={result.channel_url} target="_blank" rel="noreferrer">E’lonni ko‘rish ↗</a></div></article>)}</div></> : <div className="empty-state"><p><strong>Siz so‘ragan botni topa olmadik.</strong>Balki qidiruv adashgandir. Telegram kanalimizda tayyor bot e’lonlarini ko‘ring va o‘zingizga yoqqanini tanlang.</p><a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer">Telegram kanalga o‘tish ↗</a></div>}
+          {loading ? <div className="loading-card"><span /><span /><span /></div> : results.length > 0 ? <><p className="result-intro">{intro}</p><div className="result-rail">{results.slice(0, 5).map((result, index) => <article className="bot-card" key={result.id}><div className="match"><span>{96 - index * 3}%</span> MOS</div><h3>{title(result.summary)}</h3><p>{result.summary}</p><div className="card-actions"><button onClick={() => { trackTelegram("result_details"); window.open(result.channel_url, "_blank", "noopener,noreferrer"); }}>Batafsil ko‘rish</button><a href={result.channel_url} target="_blank" rel="noreferrer" onClick={() => trackTelegram("result_listing")}>E’lonni ko‘rish ↗</a></div></article>)}</div></> : <div className="empty-state"><p><strong>Siz so‘ragan botni topa olmadik.</strong>Balki qidiruv adashgandir. Telegram kanalimizda tayyor bot e’lonlarini ko‘ring va o‘zingizga yoqqanini tanlang.</p><a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" onClick={() => trackTelegram("empty_state")}>Telegram kanalga o‘tish ↗</a></div>}
           {!loading && <p className="channel-note">Yangi tayyor botlar Telegram kanalimizda muntazam e’lon qilib boriladi.</p>}
         </div>}
       </div>
       <nav className="control-dock" aria-label="Asosiy boshqaruv">
         <button className={screen === "start" ? "active" : ""} onClick={restart}><span>⌂</span>Boshlash</button>
         <button className={screen === "questions" ? "active" : ""} onClick={openSelection}><span>✦</span>Tanlash</button>
-        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer"><span>↗</span>Kanal</a>
+        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" onClick={() => trackTelegram("dock")}><span>↗</span>Kanal</a>
       </nav>
     </section>
   </main>;
