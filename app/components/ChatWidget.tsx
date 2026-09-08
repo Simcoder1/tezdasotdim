@@ -70,7 +70,7 @@ export default function ChatWidget() {
     <section className="finder-shell" ref={stageRef} tabIndex={-1} aria-label="Tayyor Telegram bot tanlash yordamchisi">
       <header className="finder-topbar">
         <button className="home-link" onClick={restart} aria-label="Bosh sahifaga qaytish">
-          <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tayyor Telegram botlar" />
+          <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tezda Sotdim — tayyor Telegram botlar" />
         </button>
         <div className="top-links">
           <Link href="/telegram-bot">Bot turlari</Link>

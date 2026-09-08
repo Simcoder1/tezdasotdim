@@ -19,3 +19,5 @@
 - Production domen, GA4 Measurement ID va Google Search Console verification kodi ulandi.
 - Organik Google trafik uchun xaridor niyatiga mos 6 ta SEO sahifa va bitta yo‘nalishlar markazi yaratildi.
 - Bosh sahifadan SEO yo‘nalishlariga ichki havola hamda sitemap’ga barcha yangi URL’lar qo‘shildi.
+- Google uchun “Tezda Sotdim” sayt nomi, brend ma’lumotlari va Organization sxemasi qo‘shildi; interfeysdagi brendsiz dizayn saqlandi.
+- Google robotlari uchun alohida `robots.txt` va sitemap ko‘rsatmasi qo‘shildi.
