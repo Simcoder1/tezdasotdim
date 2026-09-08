@@ -16,3 +16,4 @@
 - Google uchun canonical metadata, indekslash sozlamasi, WebSite structured data va domen asosidagi sitemap qo‘shildi.
 - GA4 hodisalari qo‘shildi: maqsad tanlash, qidiruv, tavsiyalar soni va Telegramga o‘tish konversiyasi.
 - Erkin qidiruv matni maxfiylik sabab GA4’ga yuborilmaydi; faqat turi va uzunligi o‘lchanadi.
+- Production domen, GA4 Measurement ID va Google Search Console verification kodi ulandi.
