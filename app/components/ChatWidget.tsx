@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 type Result = { id: number; summary: string; channel_url: string };
 type Choice = { label: string; query: string };
@@ -43,6 +44,11 @@ export default function ChatWidget() {
     } finally { setLoading(false); }
   }
   function chooseGoal(choice: Choice) { setAnswers([choice.query]); setQuestion(0); setScreen("questions"); }
+  function openSelection() {
+    setAnswers(["biznes uchun tayyor Telegram bot"]);
+    setQuestion(0);
+    setScreen("questions");
+  }
   function chooseAnswer(choice: Choice) {
     const next = [...answers, choice.query];
     if (question === QUESTIONS.length - 1) { setAnswers(next); void findBots(next); return; }
@@ -54,16 +60,17 @@ export default function ChatWidget() {
   return <main className="finder-page">
     <section className="finder-shell" ref={stageRef} tabIndex={-1} aria-label="Tayyor Telegram bot tanlash yordamchisi">
       <header className="finder-topbar">
-        <button className="finder-mark" onClick={restart} aria-label="Bosh sahifaga qaytish"><i /> BOT FINDER</button>
-        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link">Telegram kanali <span>↗</span></a>
+        <button className="home-link" onClick={restart} aria-label="Bosh sahifaga qaytish">
+          <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tayyor Telegram botlar" />
+        </button>
+        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link">Telegram kanal <span>↗</span></a>
       </header>
       <div className={"finder-stage screen-" + screen}>
         {screen === "start" && <div className="screen start-screen">
-          <p className="eyebrow">BIR NECHA DAQIQA ICHIDA</p>
-          <h1>Tayyor Telegram bot.<br /><em>Sizning biznesingizga mos.</em></h1>
-          <p className="lead">Nimani yo‘lga qo‘ymoqchi ekaningizni tanlang — aqlli tanlovchi sizga tayyor variantlarni topadi.</p>
+          <h1><span className="headline-alert">Noldan Telegram bot yasatmang!</span><em>Tayyorini sotib oling va hoziroq ishga tushuring.</em></h1>
+          <p className="lead">Sizga qanday Telegram bot kerakligini qisqacha tushuntiring — sizga mos botlarni taqdim etamiz yoki tugmalardan birini tanlang.</p>
           <div className="goal-grid" aria-label="Maqsadingizni tanlang">{GOALS.map((goal, index) => <button key={goal.label} onClick={() => chooseGoal(goal)}><span>0{index + 1}</span>{goal.label}<b>↗</b></button>)}</div>
-          <form className="intent-form" onSubmit={submit}><input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Yoki qisqacha nima kerakligini yozing…" aria-label="Nima kerakligini yozing" /><button aria-label="Qidirish" disabled={!input.trim()}>↑</button></form>
+          <form className="intent-form" onSubmit={submit}><input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Masalan: gul do‘konim uchun onlayn savdo boti kerak" aria-label="Nima kerakligini yozing" /><button aria-label="Qidirish" disabled={!input.trim()}>↑</button></form>
         </div>}
         {screen === "questions" && <div className="screen question-screen">
           <p className="eyebrow">MOSLIKNI ANIQLAYMIZ · {question + 1}/2</p><div className="progress"><span style={{ width: `${(question + 1) * 50}%` }} /></div>
@@ -73,14 +80,14 @@ export default function ChatWidget() {
           <button className="quiet-button" onClick={() => void findBots(answers)}>Savollarni o‘tkazib yuborish</button>
         </div>}
         {screen === "results" && <div className="screen results-screen">
-          <div className="results-heading"><div><p className="eyebrow">TAYYOR YECHIMLAR</p><h2>{loading ? "Siz uchun qidiryapmiz…" : "Sizga mos variantlar"}</h2></div><button onClick={restart} className="restart">↺ Qayta tanlash</button></div>
-          {loading ? <div className="loading-card"><span /><span /><span /></div> : results.length > 0 ? <><p className="result-intro">{intro}</p><div className="result-rail">{results.slice(0, 5).map((result, index) => <article className="bot-card" key={result.id}><div className="match"><span>{96 - index * 3}%</span> MOS</div><h3>{title(result.summary)}</h3><p>{result.summary}</p><div className="card-actions"><button onClick={() => window.open(result.channel_url, "_blank", "noopener,noreferrer")}>Batafsil ko‘rish</button><a href={result.channel_url} target="_blank" rel="noreferrer">E’lonni ko‘rish ↗</a></div></article>)}</div></> : <div className="empty-state"><p>{intro}</p><a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer">Telegram kanalini ochish ↗</a></div>}
-          {!loading && <p className="channel-note">Yangi tayyor botlar Telegram kanalida muntazam e’lon qilinadi.</p>}
+          <div className="results-heading"><h2>{loading ? "Siz uchun qidiryapmiz…" : "Sizga mos variantlar"}</h2><button onClick={restart} className="restart">↺ Qayta tanlash</button></div>
+          {loading ? <div className="loading-card"><span /><span /><span /></div> : results.length > 0 ? <><p className="result-intro">{intro}</p><div className="result-rail">{results.slice(0, 5).map((result, index) => <article className="bot-card" key={result.id}><div className="match"><span>{96 - index * 3}%</span> MOS</div><h3>{title(result.summary)}</h3><p>{result.summary}</p><div className="card-actions"><button onClick={() => window.open(result.channel_url, "_blank", "noopener,noreferrer")}>Batafsil ko‘rish</button><a href={result.channel_url} target="_blank" rel="noreferrer">E’lonni ko‘rish ↗</a></div></article>)}</div></> : <div className="empty-state"><p><strong>Siz so‘ragan botni topa olmadik.</strong>Balki qidiruv adashgandir. Telegram kanalimizda tayyor bot e’lonlarini ko‘ring va o‘zingizga yoqqanini tanlang.</p><a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer">Telegram kanalga o‘tish ↗</a></div>}
+          {!loading && <p className="channel-note">Yangi tayyor botlar Telegram kanalimizda muntazam e’lon qilib boriladi.</p>}
         </div>}
       </div>
       <nav className="control-dock" aria-label="Asosiy boshqaruv">
         <button className={screen === "start" ? "active" : ""} onClick={restart}><span>⌂</span>Boshlash</button>
-        <button className={screen === "questions" ? "active" : ""} onClick={() => screen !== "start" && setScreen("questions")}><span>✦</span>Tanlash</button>
+        <button className={screen === "questions" ? "active" : ""} onClick={openSelection}><span>✦</span>Tanlash</button>
         <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer"><span>↗</span>Kanal</a>
       </nav>
     </section>
