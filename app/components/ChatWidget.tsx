@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { trackEvent } from "../lib/analytics";
 
 type Result = { id: number; summary: string; channel_url: string };
@@ -71,7 +72,10 @@ export default function ChatWidget() {
         <button className="home-link" onClick={restart} aria-label="Bosh sahifaga qaytish">
           <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tayyor Telegram botlar" />
         </button>
-        <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link" onClick={() => trackTelegram("header")}>Telegram kanal <span>↗</span></a>
+        <div className="top-links">
+          <Link href="/telegram-bot">Bot turlari</Link>
+          <a href="https://t.me/tezdasotdim" target="_blank" rel="noreferrer" className="channel-link" onClick={() => trackTelegram("header")}>Telegram kanal <span>↗</span></a>
+        </div>
       </header>
       <div className={"finder-stage screen-" + screen}>
         {screen === "start" && <div className="screen start-screen">
