@@ -11,7 +11,7 @@ button { cursor: pointer; }
 
 .finder-page {
   min-height: 100dvh; display: grid; place-items: center; padding: 18px;
-  background: radial-gradient(circle at 50% -10%, #18314b 0, #07111d 32%, #01050a 72%);
+  background: radial-gradient(circle at 50% -10%, #18314b66 0, #07111dab 32%, #01050ae6 72%);
 }
 .finder-shell {
   position: relative; width: min(1180px, 100%); height: min(820px, calc(100dvh - 36px));
@@ -215,4 +215,93 @@ button { cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ===== Lego isometric city background ===== */
+.lego-bg {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden;
+  background: #02060c; pointer-events: none;
+}
+.lego-scene-svg { width: 100%; height: 100%; display: block; }
+
+.lego-person { animation: figureBob 2.6s ease-in-out infinite; transform-origin: center bottom; }
+.lego-person-1 { animation-delay: 0s; }
+.lego-person-2 { animation-delay: .3s; }
+.lego-person-3 { animation-delay: .55s; }
+.lego-person-4 { animation-delay: .8s; }
+.lego-person-5 { animation-delay: 1.05s; }
+@keyframes figureBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.lego-building { transform-origin: center bottom; animation: buildingGlow 6s ease-in-out infinite; }
+.lego-building-5, .lego-building-9 { animation: landmarkFlicker 3.4s ease-in-out infinite; }
+@keyframes buildingGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.06); }
+}
+@keyframes landmarkFlicker {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.18) saturate(1.15); }
+}
+.landmark-glow { animation: landmarkGlowPulse 2.2s ease-in-out infinite; }
+@keyframes landmarkGlowPulse {
+  0%, 100% { opacity: .5; r: 5px; }
+  50% { opacity: 1; r: 8px; }
+}
+
+.lego-window { animation: windowTwinkle 4s ease-in-out infinite; }
+@keyframes windowTwinkle {
+  0%, 100% { opacity: .3; }
+  50% { opacity: .95; }
+}
+
+.moon-pulse { animation: moonPulse 5s ease-in-out infinite; }
+@keyframes moonPulse {
+  0%, 100% { opacity: .06; }
+  50% { opacity: .13; }
+}
+
+.dust { animation: dustDrift 9s linear infinite; }
+.dust:nth-child(3n) { animation-duration: 12s; }
+.dust:nth-child(3n+1) { animation-duration: 7s; }
+@keyframes dustDrift {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: .6; }
+  90% { opacity: .5; }
+  100% { transform: translate(-40px, -160px); opacity: 0; }
+}
+
+.road-dash { animation: roadFlow 1.4s linear infinite; }
+@keyframes roadFlow {
+  to { stroke-dashoffset: -60; }
+}
+
+/* delivery carts travel from the city gate to the front of the queue, on an endless loop */
+.delivery-cart { animation: cartRoute 5.5s cubic-bezier(.45,0,.55,1) infinite; opacity: 0; }
+.cart-glow { animation: cartGlowPulse 1s ease-in-out infinite; }
+@keyframes cartGlowPulse {
+  0%, 100% { opacity: .18; }
+  50% { opacity: .4; }
+}
+.cart-a { animation-delay: 0s; }
+.cart-b { animation-delay: 1.85s; }
+.cart-c { animation-delay: 3.7s; }
+@keyframes cartRoute {
+  0%   { transform: translate(930px, 522px) scale(.72); opacity: 0; }
+  8%   { opacity: 1; }
+  50%  { transform: translate(755px, 636px) scale(.88); opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translate(600px, 690px) scale(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lego-person, .lego-building, .lego-window, .moon-pulse, .dust, .road-dash, .delivery-cart, .cart-glow, .landmark-glow {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .lego-bg { opacity: .55; }
 }
