@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import LegoScene from "./components/LegoScene";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tezdasotdim.vercel.app";
 const analyticsId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -68,7 +67,6 @@ export default function RootLayout({
   return (
     <html lang="uz">
       <body className="min-h-screen text-slate-900 antialiased">
-        <LegoScene />
         {children}
         <script
           type="application/ld+json"

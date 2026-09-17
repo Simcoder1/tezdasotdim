@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { trackEvent } from "../lib/analytics";
+import LegoScene from "./LegoScene";
 
 type Result = { id: number; summary: string; channel_url: string };
 type Choice = { label: string; query: string };
@@ -68,6 +69,7 @@ export default function ChatWidget() {
 
   return <main className="finder-page">
     <section className="finder-shell" ref={stageRef} tabIndex={-1} aria-label="Tayyor Telegram bot tanlash yordamchisi">
+      <LegoScene />
       <header className="finder-topbar">
         <button className="home-link" onClick={restart} aria-label="Bosh sahifaga qaytish">
           <Image className="brand-icon" src="/bot-icon.jpg" width={48} height={48} priority alt="Tezda Sotdim — tayyor Telegram botlar" />

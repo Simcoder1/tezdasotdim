@@ -11,12 +11,12 @@ button { cursor: pointer; }
 
 .finder-page {
   min-height: 100dvh; display: grid; place-items: center; padding: 18px;
-  background: radial-gradient(circle at 50% -10%, #18314b40 0, #07111d66 32%, #01050a85 72%);
+  background: radial-gradient(circle at 50% -10%, #18314b 0, #07111d 32%, #01050a 72%);
 }
 .finder-shell {
   position: relative; width: min(1180px, 100%); height: min(820px, calc(100dvh - 36px));
   min-height: 560px; overflow: hidden; border: 1px solid #29425a; border-radius: 28px;
-  background: linear-gradient(145deg, #091522, #03080e 58%, #07111b);
+  background: linear-gradient(145deg, #091522d9, #03080ee0 58%, #07111be0);
   box-shadow: 0 34px 120px #000d, 0 0 55px #4f9bd10d; outline: 0;
 }
 .finder-shell::after {
@@ -219,10 +219,14 @@ button { cursor: pointer; }
 
 /* ===== Lego isometric city background ===== */
 .lego-bg {
-  position: fixed; inset: 0; z-index: -1; overflow: hidden;
-  background: #02060c; pointer-events: none;
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  border-radius: inherit; pointer-events: none;
 }
-.lego-scene-svg { width: 100%; height: 100%; display: block; }
+.lego-scene-svg { width: 100%; height: 100%; display: block; opacity: .78; }
+.lego-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, #030711ee 0%, #030711d9 30%, #03071180 54%, #03071133 74%, #0307110f 100%);
+}
 
 .lego-person { animation: figureBob 2.6s ease-in-out infinite; transform-origin: center bottom; }
 .lego-person-1 { animation-delay: 0s; }
