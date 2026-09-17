@@ -11,7 +11,7 @@ button { cursor: pointer; }
 
 .finder-page {
   min-height: 100dvh; display: grid; place-items: center; padding: 18px;
-  background: radial-gradient(circle at 50% -10%, #18314b66 0, #07111dab 32%, #01050ae6 72%);
+  background: radial-gradient(circle at 50% -10%, #18314b40 0, #07111d66 32%, #01050a85 72%);
 }
 .finder-shell {
   position: relative; width: min(1180px, 100%); height: min(820px, calc(100dvh - 36px));
