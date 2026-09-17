@@ -222,7 +222,7 @@ button { cursor: pointer; }
   position: absolute; inset: 0; z-index: 0; overflow: hidden;
   border-radius: inherit; pointer-events: none;
 }
-.lego-scene-svg { width: 100%; height: 100%; display: block; opacity: .78; }
+.lego-scene-svg { width: 100%; height: 100%; display: block; opacity: .86; }
 .lego-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(100deg, #030711ee 0%, #030711d9 30%, #03071180 54%, #03071133 74%, #0307110f 100%);
@@ -240,7 +240,7 @@ button { cursor: pointer; }
 }
 
 .lego-building { transform-origin: center bottom; animation: buildingGlow 6s ease-in-out infinite; }
-.lego-building-5, .lego-building-9 { animation: landmarkFlicker 3.4s ease-in-out infinite; }
+.lego-building-3, .lego-building-5 { animation: landmarkFlicker 3.4s ease-in-out infinite; }
 @keyframes buildingGlow {
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.06); }
@@ -282,6 +282,23 @@ button { cursor: pointer; }
   to { stroke-dashoffset: -60; }
 }
 
+.cloud { animation: cloudDrift 40s linear infinite; }
+.cloud-1 { animation-duration: 46s; }
+.cloud-2 { animation-duration: 34s; animation-delay: -8s; }
+.cloud-3 { animation-duration: 58s; animation-delay: -20s; }
+.cloud-4 { animation-duration: 38s; animation-delay: -14s; }
+@keyframes cloudDrift {
+  0% { transform: translateX(-40px); }
+  50% { transform: translateX(40px); }
+  100% { transform: translateX(-40px); }
+}
+
+.crane-cable { animation: craneSway 4.5s ease-in-out infinite; transform-origin: 1400px 308px; }
+@keyframes craneSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.2deg); }
+}
+
 /* delivery carts travel from the city gate to the front of the queue, on an endless loop */
 .delivery-cart { animation: cartRoute 5.5s cubic-bezier(.45,0,.55,1) infinite; opacity: 0; }
 .cart-glow { animation: cartGlowPulse 1s ease-in-out infinite; }
@@ -301,7 +318,7 @@ button { cursor: pointer; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lego-person, .lego-building, .lego-window, .moon-pulse, .dust, .road-dash, .delivery-cart, .cart-glow, .landmark-glow {
+  .lego-person, .lego-building, .lego-window, .moon-pulse, .dust, .road-dash, .delivery-cart, .cart-glow, .landmark-glow, .cloud, .crane-cable {
     animation: none !important;
   }
 }
